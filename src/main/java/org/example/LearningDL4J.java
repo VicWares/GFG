@@ -1,6 +1,6 @@
 package org.example;
 /*****************************************************************************************
- * DL4J Example: version 220127
+ * DL4J Example: version 220130
  *****************************************************************************************/
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
@@ -32,11 +32,9 @@ public class LearningDL4J extends JComponent
 {
     private static int FEATURES_COUNT = 4;
     private static int CLASSES_COUNT = 3;
-    private static String version = "230127";
+    private static String version = "230130";
     private static Object eval;
     private static int i;
-    private int x = 100;
-    private int y = 100;
     private static double accuracy;
     private ArrayList<Dimension> graphPointsList = new ArrayList<>();
     private static Dimension2D oldPoint = new Dimension(0,0);

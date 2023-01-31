@@ -1,117 +1,92 @@
 package org.example;// Java Program to Illustrate Working of SwingWorker Class
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.ApplicationFrame;
 
-// Importing required classes
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Dimension2D;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
-public class GFG
+public class GFG extends ApplicationFrame
 {
-    private static JLabel statusLabel;
-    private static JFrame mainFrame;
-    private static int FEATURES_COUNT = 4;
-    private static int CLASSES_COUNT = 3;
-    private static String version = "230127";
-    private static Object eval;
-    private int x = 100;
-    private int y = 100;
-    private double accuracy;
-    private ArrayList<Dimension> graphPointsList = new ArrayList<>();
-    private Dimension2D oldPoint = new Dimension(0,0);
-    private Dimension2D newPoint = new Dimension(0,0);;
-    private int i;
-    static LearningDL4J learningDL4J = new LearningDL4J();
-    public static void swingWorkerSample()
+    // Create a dataset for the line chart
+    static XYSeries series = new XYSeries("Real-time data");
+    static XYSeriesCollection dataset = new XYSeriesCollection(series);
+    public GFG(String title)
     {
-        LearningDL4J learningDL4J = new LearningDL4J();
-        mainFrame = new JFrame("Swing Worker");
-        mainFrame.setSize(400, 400);
-        mainFrame.setLayout(new GridLayout(2, 1));
-        mainFrame.addWindowListener(new WindowAdapter() {
-            // Method
+        super(title);
+    }
+    public static void setDataset(XYSeriesCollection dataset)
+    {
+        GFG.dataset = dataset;
+    }
+    // Create the chart
+    static JFreeChart chart = ChartFactory.createXYLineChart("JFreeNN", "Epoch", "Error", dataset, PlotOrientation.VERTICAL, true, true, false);
+    static ChartPanel chartPanel = new ChartPanel(chart);
+    private static JFrame mainFrame;
+    public static void jFreeNN()
+    {
+        mainFrame = new JFrame("JFreeNNN");
+        mainFrame.setSize(1500, 1500);
+        mainFrame.add(chartPanel);
+        mainFrame.addWindowListener(new WindowAdapter()
+        {
             @Override
             public void windowClosing(WindowEvent e)
             {
                 System.exit(0);
             }
         });
-        statusLabel = new JLabel("Not Completed", JLabel.CENTER);
-        mainFrame.add(statusLabel);
-        JButton btn = new JButton("Start LearningDL");
-        btn.setPreferredSize(new Dimension(5, 5));
-        btn.addActionListener(new ActionListener() {
+        JButton btn = new JButton("Start JFreeNN");
+        btn.setBounds(40,100,100,60);
+        btn.addActionListener(new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println(
-                        "Button clicked, thread started");
+                System.out.println("Button clicked, thread started");
                 startThread();
             }
         });
-        mainFrame.add(btn);
+        chartPanel.add(btn);
         mainFrame.setVisible(true);
     }
     private static void startThread()
     {
-        SwingWorker sw1 = new SwingWorker() {
+        SwingWorker sw1 = new SwingWorker()
+        {
             @Override
-            protected String doInBackground() throws Exception//************************> Defining what thread will do here
+            protected String doInBackground() throws Exception//************************> Defining what SwingWorker thread will do here
             {
-                // Defining what thread will do here
-//                for (int i = 10; i >= 0; i--) {
-//                    Thread.sleep(100);
-//                    System.out.println("Value in thread : "
-//                            + i);
-//                    publish(i);
-//                }
                 LearningDL4J learningDL4J = new LearningDL4J();
                 learningDL4J.loadData();
                 String res = "Finished Execution";
                 return res;
             }
-
-            // Method
-            @Override protected void process(List chunks)
+            @Override
+            protected void done()// this method is called when the background thread finishes execution
             {
-                // define what the event dispatch thread
-                // will do with the intermediate results
-                // received while the thread is executing
-                int val = (int) chunks.get(chunks.size() - 1);
-                statusLabel.setText(String.valueOf(val));
-            }
-
-            // Method
-            @Override protected void done()
-            {
-                // this method is called when the background
-                // thread finishes execution
                 try {
                     String statusMsg = (String) get();
-                    System.out.println(
-                            "Inside done function");
-                    statusLabel.setText(statusMsg);
-                }
-                catch (InterruptedException e) {
+                    System.out.println("Inside done function");
+                } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
-                catch (ExecutionException e) {
+                } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
             }
         };
-
-        // Executes the swingworker on worker thread
+        // Executes the swing worker on worker thread
         sw1.execute();
     }
-    // Main driver method
     public static void main(String[] args)
     {
-        swingWorkerSample();
+        jFreeNN();
     }
 }

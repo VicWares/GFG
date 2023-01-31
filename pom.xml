@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>GFG</artifactId>
-    <version>230127</version>
+    <version>230130</version>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
@@ -27,6 +27,12 @@
         </plugins>
     </build>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/jfree/jfreechart -->
+        <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.13</version>
+        </dependency>
         <dependency>
             <groupId>org.nd4j</groupId>
             <artifactId>nd4j-native-platform</artifactId>
