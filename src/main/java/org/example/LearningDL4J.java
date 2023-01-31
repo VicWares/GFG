@@ -1,6 +1,6 @@
 package org.example;
 /*****************************************************************************************
- * DL4J Example: version 220130
+ * DL4J Example: version 220131
  *****************************************************************************************/
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
@@ -57,7 +57,7 @@ public class LearningDL4J extends JComponent
             out.println("Error: " + e.getLocalizedMessage());
         }
     }
-    private static void irisNNetwork(DataSet trainingData, DataSet testData)
+    private void irisNNetwork(DataSet trainingData, DataSet testData)
     {
         MultiLayerConfiguration configuration = new NeuralNetConfiguration.Builder()
                 .activation(Activation.TANH)
@@ -82,11 +82,19 @@ public class LearningDL4J extends JComponent
             model.fit(trainingData);
             eval.eval(testData.getLabels(), output);
             accuracy = eval.accuracy();
+            accuracy = 1 - accuracy;
             newPoint = new Dimension(i, (int) (accuracy * 1000));
             out.print("\nAccuracy " + accuracy + " " + newPoint.getWidth() + " " + newPoint.getHeight());
-            oldPoint = newPoint;
         }
         out.printf(eval.stats());
+    }
+    public static double getEpoch()
+    {
+        return i;
+    }
+    public static double getAccuracy()
+    {
+        return accuracy;
     }
 }
 
