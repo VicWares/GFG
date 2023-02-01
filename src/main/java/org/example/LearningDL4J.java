@@ -1,6 +1,6 @@
 package org.example;
 /*****************************************************************************************
- * DL4J Example: version 220131A
+ * DL4J Example: version 220201
  *****************************************************************************************/
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;

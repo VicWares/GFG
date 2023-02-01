@@ -1,6 +1,6 @@
 package org.example;// Java Program to Illustrate Working of SwingWorker Class
 /*****************************************************************************************
- * DL4J Example: version 220131A
+ * DL4J Example: version 220201
  *****************************************************************************************/
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -10,7 +10,6 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutionException;
@@ -24,23 +23,23 @@ public class GFG extends ApplicationFrame
     {
         super("JFreeNN");
     }
+    private String version = "230201";
     public void setDataset(XYSeriesCollection dataset)
     {
         GFG.dataset = dataset;
     }
     // Create the chart
-    JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot", "X-axis", "Y-axis", dataset, PlotOrientation.VERTICAL, true, true, false);
+    JFreeChart chart = ChartFactory.createScatterPlot("JFreeNN", "Epoch", "RMS Error", dataset, PlotOrientation.VERTICAL, true, true, false);
     ChartPanel chartPanel = new ChartPanel(chart);
-    private JFrame mainFrame;
+
     private static int epoch = 0;
     private static double accuracy = 0.0;
-    private static Dimension newPoint;
     public void jFreeNN()
     {
-        mainFrame = new JFrame("JFreeNNN");
+        System.out.println("JFreeNN version: " + version);
+        JFrame mainFrame = new JFrame("JFreeNNN");
         mainFrame.setSize(1500, 1500);
         mainFrame.add(chartPanel);
-        mainFrame.pack();
         mainFrame.setVisible(true);
         // Add a new point to the chart
         JButton btn = new JButton("Start JFreeNN");
@@ -54,11 +53,11 @@ public class GFG extends ApplicationFrame
                 startThread();
             }
         });
-        chartPanel.add(btn);
+        btn.setVisible(true);
         mainFrame.setVisible(true);
+        chartPanel.add(btn);
         addPoint();
     }
-
     private void addPoint()
     {
         {
