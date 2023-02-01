@@ -1,6 +1,6 @@
 package org.example;
 /*****************************************************************************************
- * DL4J Example: version 220131
+ * DL4J Example: version 220131A
  *****************************************************************************************/
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
@@ -38,7 +38,7 @@ public class LearningDL4J extends JComponent
     private static double accuracy;
     private ArrayList<Dimension> graphPointsList = new ArrayList<>();
     private static Dimension2D oldPoint = new Dimension(0,0);
-    private static Dimension2D newPoint = new Dimension(0,0);;
+    private static Dimension newPoint = new Dimension(0,0);;
     void loadData()
     {
         try (RecordReader recordReader = new CSVRecordReader(0, ',')) {
@@ -84,6 +84,8 @@ public class LearningDL4J extends JComponent
             accuracy = eval.accuracy();
             accuracy = 1 - accuracy;
             newPoint = new Dimension(i, (int) (accuracy * 1000));
+            GFG.setEpoch((int) newPoint.getWidth());
+            GFG.setAccuracy(newPoint.getHeight());
             out.print("\nAccuracy " + accuracy + " " + newPoint.getWidth() + " " + newPoint.getHeight());
         }
         out.printf(eval.stats());

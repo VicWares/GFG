@@ -1,6 +1,6 @@
 package org.example;// Java Program to Illustrate Working of SwingWorker Class
 /*****************************************************************************************
- * DL4J Example: version 220131
+ * DL4J Example: version 220131A
  *****************************************************************************************/
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -10,10 +10,9 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.concurrent.ExecutionException;
 public class GFG extends ApplicationFrame
 {
@@ -30,33 +29,20 @@ public class GFG extends ApplicationFrame
         GFG.dataset = dataset;
     }
     // Create the chart
-    JFreeChart chart = ChartFactory.createXYLineChart("JFreeNN", "Epoch", "Error", dataset, PlotOrientation.VERTICAL, true, true, false);
+    JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot", "X-axis", "Y-axis", dataset, PlotOrientation.VERTICAL, true, true, false);
     ChartPanel chartPanel = new ChartPanel(chart);
     private JFrame mainFrame;
+    private static int epoch = 0;
+    private static double accuracy = 0.0;
+    private static Dimension newPoint;
     public void jFreeNN()
     {
-        Timer ticker = new Timer(100, new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                System.out.println("\nGFG41 Ticker ticked");
-                System.out.println("GFG42 Epoch: " + LearningDL4J.getEpoch() + " Accuracy: " + LearningDL4J.getAccuracy());
-                series.add(LearningDL4J.getEpoch(), LearningDL4J.getAccuracy());
-            }
-        });
-        ticker.start();
         mainFrame = new JFrame("JFreeNNN");
         mainFrame.setSize(1500, 1500);
         mainFrame.add(chartPanel);
-        mainFrame.addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent e)
-            {
-                System.exit(0);
-            }
-        });
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+        // Add a new point to the chart
         JButton btn = new JButton("Start JFreeNN");
         btn.setBounds(40, 100, 100, 60);
         btn.addActionListener(new ActionListener()
@@ -70,6 +56,15 @@ public class GFG extends ApplicationFrame
         });
         chartPanel.add(btn);
         mainFrame.setVisible(true);
+        addPoint();
+    }
+
+    private void addPoint()
+    {
+        {
+            series.add(this.epoch, this.accuracy);
+            chartPanel.repaint();
+        }
     }
     private void startThread()
     {
@@ -101,5 +96,14 @@ public class GFG extends ApplicationFrame
     public static void main(String[] args)
     {
         new GFG().jFreeNN();
+    }
+    public static void setEpoch(int epoch)
+    {
+        GFG.epoch = epoch;
+    }
+    public static void setAccuracy(double accuracy)
+    {
+        GFG.accuracy = accuracy;
+        series.add(epoch, accuracy);
     }
 }
